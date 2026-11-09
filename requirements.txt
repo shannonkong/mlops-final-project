@@ -40,3 +40,7 @@ streamlit          # optional: custom dashboard
 pytest
 httpx              # needed by FastAPI's TestClient
 ruff
+
+matplotlib         # plots in notebooks
+ipykernel          # lets VS Code run notebooks in this environment
+openpyxl
