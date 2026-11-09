@@ -1,0 +1,44 @@
+# CI workflow: runs automatically on every pull request into main
+# (and on every push to main). A PR can only merge if this job passes.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    # This name is what you select as the required status check in the ruleset.
+    name: lint-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the repo's code onto the CI machine
+      - uses: actions/checkout@v6
+
+      # 2. Install Python 3.12 and cache pip downloads so later runs are faster
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      # 3. Install the project's dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Check code style and catch common mistakes (unused imports, undefined names)
+      - name: Lint with ruff
+        run: ruff check .
+
+      # 5. Run every test in the tests/ folder
+      - name: Run tests
+        run: pytest
+
+      # Phase 4: add a step here that builds the API's Docker image, e.g.
+      # - name: Build Docker image
+      #   run: docker build -t netflix-survival-api ./api
