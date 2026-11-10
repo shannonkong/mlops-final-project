@@ -1,0 +1,7 @@
+# Store and check out text files with Unix-style line endings (LF) on every computer.
+* text=auto eol=lf
+
+# Never touch binary files
+*.xlsx binary
+*.parquet binary
+*.png binary

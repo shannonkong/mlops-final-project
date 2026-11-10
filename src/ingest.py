@@ -20,9 +20,11 @@ import argparse
 import logging
 import os
 import shutil
+import warnings
 from datetime import UTC, date, datetime
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -197,7 +199,11 @@ def load_raw(path: Path | str) -> pd.DataFrame:
     """
     path = Path(path)
     if path.suffix.lower() == ".xlsx":
-        df = pd.read_excel(path, header=_find_header_row(path))
+        with warnings.catch_warnings():
+            # Netflix's file has no "default style" section, so openpyxl warns and applies its own.
+            # Styles don't affect the values, so this one warning is safe to hide.
+            warnings.filterwarnings("ignore", message="Workbook contains no default style", category=UserWarning)
+            df = pd.read_excel(path, header=_find_header_row(path))
     else:  # also accept Netflix's .tsv format
         df = pd.read_csv(path, sep="\t")
 
@@ -211,7 +217,7 @@ def load_raw(path: Path | str) -> pd.DataFrame:
         )
     for column in OPTIONAL_COLUMNS:
         if column not in df.columns:
-            df[column] = pd.NA
+            df[column] = np.nan  # np.nan (not pd.NA) so validation can still convert the column to numbers
 
     df["week"] = pd.to_datetime(df["week"])
     return df.reset_index(drop=True)
