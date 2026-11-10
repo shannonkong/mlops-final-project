@@ -62,6 +62,7 @@ cd <repo-name>
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+pip install --upgrade pyopenssl cryptography   # works around a DVC Google Drive bug
 ```
 
 ### 2. Get the data

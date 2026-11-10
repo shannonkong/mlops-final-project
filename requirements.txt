@@ -13,7 +13,7 @@ requests           # TMDB API calls
 python-dotenv      # load API keys from .env
 
 # --- Data versioning ---
-dvc
+dvc[gdrive]
 # Add the extra for your remote, e.g. dvc[gdrive] or dvc[s3]
 
 # --- Modeling and AutoML ---

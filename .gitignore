@@ -33,7 +33,6 @@ htmlcov/
 # ---------------------------------------------
 /data/raw/*
 /data/processed/*
-!/data/raw/.gitkeep
 !/data/processed/.gitkeep
 !/data/**/*.dvc
 
@@ -66,3 +65,4 @@ Thumbs.db
 
 ~$*
 .pyprojectx/
+desktop.ini
