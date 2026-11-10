@@ -1,5 +1,6 @@
 """Tests for src/ingest.py. They build small Excel files in a temp folder, so no real data is needed."""
 
+import warnings
 from datetime import date
 
 import pandas as pd
@@ -95,6 +96,24 @@ def test_download_rejects_non_excel_response(tmp_path, monkeypatch):
             pass
 
     monkeypatch.setattr(ingest.requests, "get", lambda *args, **kwargs: FakeResponse())
-    with pytest.raises(ValueError, match="did not return an .xlsx"):
+    with pytest.raises(ValueError, match=r"did not return an \.xlsx"):
         ingest.download("https://example.com/file.xlsx", tmp_path / "out.xlsx")
     assert not (tmp_path / "out.xlsx").exists()
+
+
+def test_load_raw_hides_only_the_default_style_warning(tmp_path, monkeypatch):
+    path = make_xlsx(tmp_path / "x_global_weekly.xlsx")
+    real_read_excel = pd.read_excel
+
+    def read_excel_that_warns(*args, **kwargs):
+        warnings.warn("Workbook contains no default style, apply openpyxl's default", UserWarning, stacklevel=2)
+        warnings.warn("some other problem", UserWarning, stacklevel=2)
+        return real_read_excel(*args, **kwargs)
+
+    monkeypatch.setattr(ingest.pd, "read_excel", read_excel_that_warns)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        ingest.load_raw(path)
+    messages = [str(w.message) for w in caught]
+    assert not any("default style" in m for m in messages)
+    assert "some other problem" in messages

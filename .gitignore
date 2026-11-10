@@ -33,7 +33,6 @@ htmlcov/
 # ---------------------------------------------
 /data/raw/*
 /data/processed/*
-!/data/processed/.gitkeep
 !/data/**/*.dvc
 
 # DVC local cache and temp files

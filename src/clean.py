@@ -55,7 +55,7 @@ def fill_runtime(df: pd.DataFrame) -> pd.DataFrame:
 
     # Median published runtime per title, for titles with a usable value in some week.
     # season_title is blank for films, so fill it before grouping.
-    keys = out[TITLE_KEY].fillna({"season_title": "N/A"})
+    keys = out[TITLE_KEY].assign(season_title=out["season_title"].astype(object).fillna("N/A"))
     other_week = published.groupby([keys[c] for c in TITLE_KEY]).transform("median")
 
     out["runtime_filled"] = published.fillna(derived).fillna(other_week)
