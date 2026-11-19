@@ -1,0 +1,15 @@
+# Hand-made fixes for TMDB matches (read by src/tmdb.py). Commit this file with Git (not DVC).
+# One row per title_key, copied exactly from data/external/tmdb_titles.parquet.
+# tmdb_id: the right TMDB id (the number in the themoviedb.org page URL), or blank for "no TMDB match".
+# kind: tv or movie; blank = same as the Netflix list (set movie for a TV special filed as a film).
+# Edit in VS Code, not Excel (Excel can change the encoding and break accented titles).
+title_key,tmdb_id,kind,note
+TV (English) | Spike | Spike: Season 1,,,matched an unrelated 2014 car show
+TV (English) | Transatlantic | Transatlantic: Limited Series,,,matched Transatlantic Sessions (1995); Netflix's is the 2023 drama
+TV (English) | The Reunion | N/A,,,matched Dynasty: The Reunion
+TV (Non-English) | Class | Class: Season 1,,,matched Mr. Kinpachi in Class 3B (1979); Netflix's is the 2023 Indian series
+TV (Non-English) | Go! | Go!: Season 1,,,matched Go Fighting (Chinese variety show)
+TV (Non-English) | Rafa | Rafa: Limited Series,,,matched Rafael Orozco - El Idolo (2012)
+TV (English) | Jake Paul vs. Mike Tyson | N/A,,,live event; matched the Countdown promo series
+TV (English) | Canelo Álvarez vs. Terence Crawford | N/A,,,live event; matched the Countdown promo series
+Films (English) | Dr. Seuss' The Grinch | N/A,,,matched the 2000 live-action film; Netflix's is the 2018 animated film (add its id)

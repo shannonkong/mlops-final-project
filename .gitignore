@@ -34,6 +34,7 @@ htmlcov/
 /data/raw/*
 /data/processed/*
 !/data/**/*.dvc
+/data/external/tmdb_cache/
 
 # DVC local cache and temp files
 .dvc/cache/
